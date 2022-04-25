@@ -29,8 +29,8 @@ _Update: 2022-04-24_
 ### **Analysis Sentimental**        
 **(1) Crawling and Merging**     
 파일 위치: Developing-CurrentForecastIndex-for-ShippingIndustry/1. Analysis Sentimental/(1) Crawling & Merging/        
-+ 네이버, 다음에서 다음의 데이터를 크롤링함.    
-검색 키워드: 해운업, 해운산업, 해운경기, 해운업계 (중 1개 이상 포함)    
++ 모델 학습 데이터 구축을 위해 네이버, 다음에서 다음의 데이터를 크롤링함.    
+검색 뉴스: 많이 본 뉴스/ 댓글 많은 뉴스 (2021년 3월 ~ 2021년 11월)   
     + 뉴스 날짜
     + 뉴스 제목
     + 뉴스 본문
@@ -43,7 +43,7 @@ _Update: 2022-04-24_
 + 각 기사의 감성지수는 다음의 식을 통해 산출함.    
     + 긍정 rating(좋아요, 감동이에요) - 부정 rating (슬퍼요, 화가 나요)   
     + 양수이면 1(긍정) tag, 음수이면 0(부정) tag   
-+ 크롤링 후 전체 기사 Merge, 월별로 Merge
++ 크롤링 후 전체 기사 Merge, 월별로 Merge     
 **(2) Modeling**        
 > 전처리 
 ```python
@@ -134,6 +134,91 @@ print("테스트 정확도: %.4f" % (loaded_model.evaluate(X_test, y_test)[1]))
 + Bidirectional-LSTM 방식으로 데이터를 학습함.    
 + 손실율: 0.4597 // 정확도: 0.8141     
 ### Handling Shipping News
+**(1) Crawling**     
+파일 위치: Developing-CurrentForecastIndex-for-ShippingIndustry/2. Handling Shipping News/Crawling_뉴스데이터_Shipping.ipynb     
++ 감성 분류기 모델에 input으로 들어갈 데이터 구축을 위해 bigkinds 사이트에서 뉴스데이터를 크롤링함.   
++ 크롤링한 데이터는 다음과 같음.    
+    + 검색 키워드: 해운업,해운산업,해운경기,해운업계    
+    + 검색 기간: 2000년 1월 ~ 2021년 11월   
+    + 뉴스 제목   
+    + 뉴스 날짜   
+    + 뉴스 본문    
+    + 뉴스 url  
+
+
+**(2) Topic Modeling**       
+**각 80개 토픽의 상위 25개 연관어를 추출 후 정합성 검증 후 NMF 토픽을 사용하였음.**    
+```   python 
+# 설치 패키지
+from gensim import corpora, models
+from gensim.models.coherencemodel import CoherenceModel
+from gensim.models.ldamodel import LdaModel
+from gensim.corpora.dictionary import Dictionary
+from gensim.test.utils import common_texts
+from gensim.test.utils import datapath
+
+# common_texts에서 dictionary 생성
+common_dictionary = Dictionary(common_texts)
+common_corpus = [common_dictionary.doc2bow(text) for text in common_texts]
+
+# corpus를 활용하여 LdaModel 생성
+lda = LdaModel(common_corpus, num_topics=80)
+
+#document(뉴스데이터)에서 word 추출 (말뭉치 생성)
+data_word=[[word for word in x.split(' ')] for x in document] 
+id2word=corpora.Dictionary(data_word)
+
+texts=data_word
+corpus=[id2word.doc2bow(text) for text in texts]
+
+print("Corpus Ready")
+
+#생성한 말뭉치로 lda 시작 
+lda = LdaModel(corpus=corpus, id2word=id2word, num_topics=80)
+print("lda done, please wait")
+
+#출력부
+for i in range(num_topics):
+    words = model.show_topic(i, topn=num_words); #반환하는 토픽 연관어 개수 
+    word_dict['Topic # ' + '{:02d}'.format(i+1)] = [i[0] for i in words]
+
+print("Result_out")
+```   
++ gensim 패키지 활용하여 LDA Topic Modeling
++ 80개 토픽으로 나누어 분류
+
+> NMF Topic Modeling
+``` python 
+from sklearn.feature_extraction.text import CountVectorizer,TfidfTransformer
+from sklearn.decomposition import NMF
+from sklearn.preprocessing import normalize
+
+#Count Vector 생성
+vectorizer=CountVectorizer(analyzer='word')
+x_counts=vectorizer.fit_transform(text)
+
+transformer=TfidfTransformer(smooth_idf=False)
+x_tfidf=transformer.fit_transform(x_counts)
+
+xtfidf_norm=normalize(x_tfidf,norm='l2',axis=1)
+
+print("xtfidf_norm Ready")
+
+model=NMF(n_components=80,init='nndsvd')
+model.fit(xtfidf_norm) # xtidf 데이터를 fit함
+
+print("Model Ready")
+
+for topic in range(components_df.shape[0]):
+    tmp = components_df.iloc[topic]
+    
+    print(f'For topic {topic+1} the words with the highest value are:')
+    
+    print(tmp.nlargest(25))
+#출력부
+```
++ sklearn을 활용하여 NMF Topic Modeling     
++ 마찬가지로 80개 토픽을 분류   
 ### Calculating Index
 ### Data Analysis 
  
