@@ -1,6 +1,6 @@
 # Developing-CurrentForecastIndex-for-ShippingIndustry
 (2021~2022) Developing Current Forcast Index of the Shipping Industry applying News Data   
-_Update: 2022-04-27_      
+_Update: 2022-04-27_   
 
 ## **Index**
 + [About this project](#about-this-project)   
@@ -29,7 +29,7 @@ _Update: 2022-04-27_
 > ### **Flow** 
 <img src = "https://user-images.githubusercontent.com/68631435/164913390-64bea86e-8a7e-4820-bafa-6b00673a44bc.png" width="60%" height="40%"> 
 
->## **Detil Function**    
+## **Detail Function**    
 ### **Analysis Sentimental**        
 > **(1) Crawling and Merging**     
 파일 위치: Developing-CurrentForecastIndex-for-ShippingIndustry/1. Analysis Sentimental/(1) Crawling & Merging/        
@@ -266,10 +266,10 @@ for i in LCount: #월별 뉴스 개수
         여기서 해운업 생산 상관성을 비교하기 위해 수상운송업생산지수를 참고하였음. (통계청)    
 + 3개의 지수와 실제지표 간 높은 상관성을 띄는 결합지수 3을 뉴스데이터 지수로 선정하였음. 
     + 실제 지표: OECD에서 발표한 우리나라의 산업생산지수        
-    + 지수와 실제 지표 간 상관계수       
-    |결합지수(1)|결합지수(1)|결합지수(1)|
-    |:---:|:---:|:---:|
-    |-0.295|-0.343|-0.493|
+    + 지수와 실제 지표 간 상관계수          
+        |결합지수(1)|결합지수(2)|결합지수(3)|
+        |:---:|:---:|:---:|
+        |-0.295|-0.343|-0.493|
 ### Data Analysis 
 > **(1) Data Set Ready**
 + 모형을 만들기 전 뉴스데이터 이외에 당기예측모형에 적용될 해운업 실물 데이터셋을 구축함. 
