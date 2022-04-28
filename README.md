@@ -49,7 +49,7 @@ _Update: 2022-04-27_
     + 양수이면 1(긍정) tag, 음수이면 0(부정) tag   
 + 크롤링 후 전체 기사 Merge, 월별로 Merge     
 > **(2) Modeling**        
->>전처리 
+> **전처리** 
 ```python
 def common_word_list(common_num,neg,pos):
     negative_word=[]; positive_word=[]
@@ -80,7 +80,7 @@ train_data['tokenized'] = train_data['tokenized'].apply(lambda x: [item for item
     + (2) 단어의 길이가 2보다 작은 경우 제거    
     + (3) common word list를 생성하고(함수 common_word_list), 그에 해당하는 단어 제거
 
->> 정수 인코딩 및 패딩 
+>**정수 인코딩 및 패딩**
 ```python
 ### 정수 인코딩 ###
 tokenizer = Tokenizer()
@@ -112,7 +112,7 @@ X_train = pad_sequences(X_train, maxlen = max_len)
 + 패딩    
     + max_len의 값을 임의로 변경하며 샘플 비율을 확인하고(함수 below_threshold_len), pad_sequence 실시    
 
->> 모델 생성
+>**모델 생성**
 ```python 
 embedding_dim = 100
 hidden_units = 128
@@ -152,7 +152,7 @@ print("테스트 정확도: %.4f" % (loaded_model.evaluate(X_test, y_test)[1]))
 
 > **(2) Topic Modeling**       
 **각 80개 토픽의 상위 25개 연관어를 추출 후 정합성 검증 후 NMF 토픽을 사용하였음.**    
->> LDA Topic Modeling 
+>**LDA Topic Modeling**
 ```   python 
 # 설치 패키지
 from gensim import corpora, models
@@ -192,7 +192,7 @@ print("Result_out")
 + gensim 패키지 활용하여 LDA Topic Modeling
 + 80개 토픽으로 나누어 분류
 
->> NMF Topic Modeling
+> **NMF Topic Modeling**
 ``` python 
 from sklearn.feature_extraction.text import CountVectorizer,TfidfTransformer
 from sklearn.decomposition import NMF
@@ -229,7 +229,7 @@ for topic in range(components_df.shape[0]):
 + 2000년 1월부터 2021년 10월까지의 뉴스데이터에서 NMF 방식으로 추출한 각 토픽별 연관어의 개수 집계    
 + 월별 지수 산출을 위해 각 뉴스데이터의 일별 토픽 단어 수를 집계함     
 > **(2) Sentimental Index** 
->> Daily Sentimental 
+>**Daily Sentimental**
 ```python
 # 감성지수를 분석하는 함수 
 def sentiment_predict(new_sentence):
