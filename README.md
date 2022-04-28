@@ -1,6 +1,6 @@
 # Developing-CurrentForecastIndex-for-ShippingIndustry
 (2021~2022) Developing Current Forcast Index of the Shipping Industry applying News Data   
-_Update: 2022-04-27_   
+_Update: 2022-04-28_     
 
 ## **Index**
 + [About this project](#about-this-project)   
@@ -241,7 +241,7 @@ def sentiment_predict(new_sentence):
 ```
 + 위 함수를 통해 각 뉴스데이터의 긍정, 부정 지수를 predict함. 
 + 예측 후에는 단순 감성지수에 해당하는 긍정-부정 값을 덧붙여주었음. 
->> Monthly Sentimental
+> **Monthly Sentimental**
 ``` python 
 for i in LCount: #월별 뉴스 개수 
     index=LCount.index(i) 
