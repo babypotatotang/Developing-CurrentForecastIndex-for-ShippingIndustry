@@ -1,5 +1,5 @@
-# Developing-CurrentForecastIndex-for-ShippingIndustry
-(2021~2022) Developing Current Forcast Index of the Shipping Industry applying News Data   
+# Nowcast the Shipping Industry Economy
+(2021~2022) Nowcast the Shipping Industry Economy using News Data     
 _Update: 2022-04-28_     
 
 ## **Index**
