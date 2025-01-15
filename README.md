@@ -1,5 +1,5 @@
-# Nowcast the Shipping Industry Economy
-(2021~2022) Nowcast the Shipping Industry Economy using News Data     
+# News based maritime index
+(2021~2022) News based maritime index    
 _Update: 2022-04-28_     
 
 ## **Index**
